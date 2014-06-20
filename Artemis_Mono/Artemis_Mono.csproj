@@ -9,13 +9,15 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Artemis_Mono</RootNamespace>
     <AssemblyName>Artemis_Mono</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;FULLDOTNET</DefineConstants>
+    <DefineConstants>DEBUG;PORTABLE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -27,7 +29,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
-    <DefineConstants>FULLDOTNET</DefineConstants>
+    <DefineConstants>PORTABLE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -35,7 +37,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-	<Compile Include="..\Artemis_XNA_INDEPENDENT\Aspect.cs" />
+    <Compile Include="..\Artemis_XNA_INDEPENDENT\Aspect.cs" />
     <Compile Include="..\Artemis_XNA_INDEPENDENT\Attributes\ArtemisComponentCreate.cs" />
     <Compile Include="..\Artemis_XNA_INDEPENDENT\Attributes\ArtemisComponentPool.cs" />
     <Compile Include="..\Artemis_XNA_INDEPENDENT\Attributes\ArtemisEntitySystem.cs" />
