@@ -66,6 +66,9 @@
     <Compile Include="..\Artemis_XNA_INDEPENDENT\Manager\ExecutionType.cs" />
     <Compile Include="..\Artemis_XNA_INDEPENDENT\Manager\GameLoopType.cs" />
     <Compile Include="..\Artemis_XNA_INDEPENDENT\Manager\GroupManager.cs" />
+    <Compile Include="..\Artemis_XNA_INDEPENDENT\Manager\LabelManager.cs">
+      <Link>LabelManager.cs</Link>
+    </Compile>
     <Compile Include="..\Artemis_XNA_INDEPENDENT\Manager\QueueManager.cs" />
     <Compile Include="..\Artemis_XNA_INDEPENDENT\Manager\RemovedComponentHandler.cs" />
     <Compile Include="..\Artemis_XNA_INDEPENDENT\Manager\RemovedEntityHandler.cs" />

@@ -85,6 +85,7 @@
     <Compile Include="Manager\ExecutionType.cs" />
     <Compile Include="Manager\GameLoopType.cs" />
     <Compile Include="Manager\GroupManager.cs" />
+    <Compile Include="Manager\LabelManager.cs" />
     <Compile Include="Manager\QueueManager.cs" />
     <Compile Include="Manager\RemovedComponentHandler.cs" />
     <Compile Include="Manager\RemovedEntityHandler.cs" />

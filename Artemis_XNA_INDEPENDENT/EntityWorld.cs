@@ -76,7 +76,7 @@ namespace Artemis
         /// If this instance is initialized
         /// </summary>
         private bool isInitialized = false;
-
+        
 #if !XBOX && !WINDOWS_PHONE
         /// <summary>
         /// Initializes a new instance of the <see cref="EntityWorld" /> class.
@@ -105,6 +105,7 @@ namespace Artemis
             this.SystemManager = new SystemManager(this);
             this.TagManager = new TagManager();
             this.GroupManager = new GroupManager();
+            this.LabelManager = new LabelManager();
             this.PoolCleanupDelay = 10;
             this.dateTime = FastDateTime.Now;
             if(initializeAll)
@@ -144,6 +145,10 @@ namespace Artemis
         /// <summary>Gets the group manager.</summary>
         /// <value>The group manager.</value>
         public GroupManager GroupManager { get; private set; }
+
+        /// <summary>Gets the label manager.</summary>
+        /// <value>The label manager.</value>
+        public LabelManager LabelManager { get; private set; }
 
         /// <summary>Gets or sets the interval in FrameUpdates between pools cleanup. Default is 10.</summary>
         /// <value>The pool cleanup delay.</value>
@@ -363,6 +368,7 @@ namespace Artemis
                 {
                     Entity entity = this.deleted.Get(index);
                     this.TagManager.Unregister(entity);
+                    this.LabelManager.Unregister(entity);
                     this.GroupManager.Remove(entity);
                     this.EntityManager.Remove(entity);
                     entity.DeletingState = false;

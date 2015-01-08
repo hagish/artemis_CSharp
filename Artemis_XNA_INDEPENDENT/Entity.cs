@@ -132,6 +132,16 @@ namespace Artemis
         /// <value><see langword="true" /> if [refreshing state]; otherwise, <see langword="false" />.</value>
         public bool RefreshingState { get; set; }
 
+        /// <summary>Gets the assigned labels.</summary>
+        /// <value>The labels.</value>
+        public Bag<string> Labels
+        {
+            get
+            {
+                return this.entityWorld.LabelManager.GetLabelsOfEntity(this);
+            }
+        }
+
         /// <summary>Gets or sets the tag.</summary>
         /// <value>The tag.</value>
         public string Tag
