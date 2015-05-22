@@ -53,6 +53,13 @@ namespace Artemis
         /// <summary>The deleted.</summary>
         private readonly Bag<Entity> deleted;
 
+        /// <summary>
+        /// while the world deletes all entities during the update this is true
+        /// to detect additional deletions during processing the current deletions
+        /// </summary>
+        private bool isDeletingInProgress;
+        private readonly Bag<Entity> additionalDeleted;
+
         /// <summary>The entity templates.</summary>
         private readonly Dictionary<string, IEntityTemplate> entityTemplates;
 
@@ -101,6 +108,7 @@ namespace Artemis
             this.pools = new Dictionary<Type, IComponentPool<ComponentPoolable>>();
             this.entityTemplates = new Dictionary<string, IEntityTemplate>();
             this.deleted = new Bag<Entity>();
+            this.additionalDeleted = new Bag<Entity>();
             this.EntityManager = new EntityManager(this);
             this.SystemManager = new SystemManager(this);
             this.TagManager = new TagManager();
@@ -213,7 +221,8 @@ namespace Artemis
         {
             Debug.Assert(entity != null, "Entity must not be null.");
 
-            this.deleted.Add(entity);
+            if (this.isDeletingInProgress) this.additionalDeleted.Add(entity);
+            else this.deleted.Add(entity);
         }
 
         /// <summary>Gets a component from a pool.</summary>
@@ -362,20 +371,34 @@ namespace Artemis
                 }
             }
 
-            if (!this.deleted.IsEmpty)
+            while(true)
             {
-                for (int index = this.deleted.Count - 1; index >= 0; --index)
+                isDeletingInProgress = true;
+                if (!this.deleted.IsEmpty)
                 {
-                    Entity entity = this.deleted.Get(index);
-                    this.TagManager.Unregister(entity);
-                    this.LabelManager.Unregister(entity);
-                    this.GroupManager.Remove(entity);
-                    this.EntityManager.Remove(entity);
-                    entity.DeletingState = false;
-                }
+                    for (int index = this.deleted.Count - 1; index >= 0; --index)
+                    {
+                        Entity entity = this.deleted.Get(index);
+                        this.TagManager.Unregister(entity);
+                        this.LabelManager.Unregister(entity);
+                        this.GroupManager.Remove(entity);
+                        this.EntityManager.Remove(entity);
+                        entity.DeletingState = false;
+                    }
 
-                this.deleted.Clear();
+                    this.deleted.Clear();
+                }
+                isDeletingInProgress = false;
+
+                // process additional deletions
+                if (additionalDeleted.IsEmpty) break;
+                else
+                {
+                    this.deleted.AddRange(this.additionalDeleted);
+                    this.additionalDeleted.Clear();
+                }
             }
+
 
 #if XBOX || WINDOWS_PHONE || PORTABLE
             bool isRefreshing = !this.refreshed.IsEmpty;

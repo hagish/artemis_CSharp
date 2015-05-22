@@ -33,9 +33,9 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\Debug\PC\</OutputPath>
+    <OutputPath>..\..\..\server\TalGame\lib\</OutputPath>
     <DefineConstants>DEBUG;FULLDOTNET,FORCEINT32</DefineConstants>
-    <DocumentationFile>bin\Debug\PC\artemis.xml</DocumentationFile>
+    <DocumentationFile>D:\fairydist\das-tal\server\TalGame\lib\x\artemis.xml</DocumentationFile>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
@@ -44,9 +44,9 @@
     <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <OutputPath>bin\Release\PC\</OutputPath>
+    <OutputPath>..\..\..\server\TalGame\lib\</OutputPath>
     <DefineConstants>FULLDOTNET</DefineConstants>
-    <DocumentationFile>bin\Release\PC\artemis.xml</DocumentationFile>
+    <DocumentationFile>D:\fairydist\das-tal\server\TalGame\lib\artemis.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
@@ -140,16 +140,7 @@
     <Reference Include="System.Numerics" />
   </ItemGroup>
   <PropertyGroup>
-    <PostBuildEvent>echo POSTBUILDSTEP for $(ProjectName)
-xcopy "$(TargetDir)*.dll" "$(SolutionDir)$(OutDir)" /i /y
-if errorlevel 1 goto BuildEventFailed
-xcopy "$(TargetDir)*.xml" "$(SolutionDir)$(OutDir)" /i /y
-if errorlevel 1 goto BuildEventFailed
-goto BuildEventOK
-:BuildEventFailed
-echo POSTBUILDSTEP for $(ProjectName) FAILED
-exit 1
-:BuildEventOK
-echo POSTBUILDSTEP for $(ProjectName) COMPLETED OK</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>
