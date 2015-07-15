@@ -57,6 +57,12 @@ namespace Artemis.Manager
         /// <summary>The removed and available.</summary>
         private readonly Bag<Entity> removedAndAvailable;
 
+        /// <summary>
+        /// Recently removed entities that are to refresh to get reused. This is the case to prevent 2 Entities from having the same internal ID in one frame
+        /// if one gets deleted and another one created directly afterwards.
+        /// </summary>
+        private readonly Bag<Entity> removedAndTooFreshToReuse;
+
         /// <summary>Map unique id to entities</summary>
         private readonly Dictionary<long, Entity> uniqueIdToEntities;
 
@@ -74,6 +80,7 @@ namespace Artemis.Manager
 
             this.uniqueIdToEntities = new Dictionary<long, Entity>();
             this.removedAndAvailable = new Bag<Entity>();
+            this.removedAndTooFreshToReuse = new Bag<Entity>();
             this.componentsByType = new Bag<Bag<IComponent>>();
             this.ActiveEntities = new Bag<Entity>();
             this.RemovedEntitiesRetention = 100;
@@ -241,9 +248,9 @@ namespace Artemis.Manager
                 ++this.TotalRemoved;
             }
 #endif
-            if (this.removedAndAvailable.Count < this.RemovedEntitiesRetention)
+            if (this.removedAndTooFreshToReuse.Count < this.RemovedEntitiesRetention)
             {
-                this.removedAndAvailable.Add(entity);
+                this.removedAndTooFreshToReuse.Add(entity);
             }
 
             if (this.RemovedEntityEvent != null)
@@ -428,6 +435,18 @@ namespace Artemis.Manager
                 {
                     pool.ReturnObject(componentPoolable);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Prior processing the entity deletes the freshly-deleted become ready-to-reuse entites
+        /// </summary>
+        internal void UpdatePriorDeletingEntities()
+        {
+            if (removedAndTooFreshToReuse.Count > 0)
+            {
+                removedAndAvailable.AddRange(removedAndTooFreshToReuse);
+                removedAndTooFreshToReuse.Clear();
             }
         }
     }

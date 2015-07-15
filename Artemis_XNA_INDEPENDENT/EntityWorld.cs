@@ -371,6 +371,8 @@ namespace Artemis
                 }
             }
 
+            this.EntityManager.UpdatePriorDeletingEntities();
+
             while(true)
             {
                 isDeletingInProgress = true;
